@@ -141,40 +141,47 @@ const Chat = () => {
                         </div>
                     </div>
                     <div className="flex gap-2">
-                        <Button variant="ghost" size="icon" onClick={handleVideoCall} className="text-muted-foreground hover:text-primary">
+                        <Button variant="ghost" size="icon" onClick={handleVideoCall} className="text-muted-foreground hover:text-primary" title="Video Call">
                             <Video className="h-5 w-5" />
                         </Button>
                         <Button variant="ghost" size="icon" onClick={handleHistory} className="text-muted-foreground hover:text-accent-foreground" title="View Recordings">
                             <History className="h-5 w-5" />
                         </Button>
-                        <Button variant="ghost" size="icon" onClick={handleClearChat} className="text-muted-foreground hover:text-destructive">
-                            <Trash2 className="h-5 w-5" />
+                        <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={handleClearChat}
+                            className="flex items-center gap-2 px-3"
+                            title="Delete Chat History"
+                        >
+                            <Trash2 className="h-4 w-4" />
+                            <span className="hidden sm:inline">Clear Chat</span>
                         </Button>
                     </div>
                 </div>
 
                 {/* Messages */}
-                <ScrollArea className="flex-1 p-4">
+                <ScrollArea className="flex-1 p-4 bg-slate-50 dark:bg-zinc-950/50">
                     <div className="space-y-6">
                         {messages.map((msg, index) => {
                             const isMe = msg.senderId === user._id;
                             return (
                                 <div key={index} className={`flex items-end gap-2 ${isMe ? "justify-end" : "justify-start"}`}>
                                     {!isMe && (
-                                        <Avatar className="h-8 w-8 border border-border mb-1">
+                                        <Avatar className="h-8 w-8 border border-border mb-1 shadow-sm">
                                             <AvatarImage src={targetUser?.photoUrl} alt="Friend" />
                                             <AvatarFallback>{targetUser?.firstName?.charAt(0)}</AvatarFallback>
                                         </Avatar>
                                     )}
 
                                     <div
-                                        className={`max-w-[70%] px-4 py-2 rounded-2xl text-sm shadow-sm ${isMe
-                                            ? "bg-green-600 text-white rounded-tr-none"
-                                            : "bg-white text-zinc-900 border border-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700 rounded-tl-none"
+                                        className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm shadow-sm transition-all ${isMe
+                                            ? "bg-green-600 text-white rounded-tr-none shadow-green-900/10"
+                                            : "bg-white border border-slate-200 text-slate-800 dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700 rounded-tl-none"
                                             }`}
                                     >
-                                        <p className="leading-relaxed">{msg.message}</p>
-                                        <p className={`text-[10px] mt-1 flex justify-end ${isMe ? "text-white/70" : "text-zinc-500 dark:text-zinc-400"}`}>
+                                        <p className="leading-relaxed tracking-wide">{msg.message}</p>
+                                        <p className={`text-[10px] mt-1.5 flex justify-end font-medium ${isMe ? "text-green-100/80" : "text-slate-400 dark:text-zinc-400"}`}>
                                             {new Date(msg.createdAt).toLocaleTimeString([], {
                                                 hour: "2-digit",
                                                 minute: "2-digit",
@@ -183,7 +190,7 @@ const Chat = () => {
                                     </div>
 
                                     {isMe && (
-                                        <Avatar className="h-8 w-8 border border-border mb-1">
+                                        <Avatar className="h-8 w-8 border border-border mb-1 shadow-sm">
                                             <AvatarImage src={user?.photoUrl} alt="Me" />
                                             <AvatarFallback>{user?.firstName?.charAt(0)}</AvatarFallback>
                                         </Avatar>
@@ -196,20 +203,18 @@ const Chat = () => {
                 </ScrollArea>
 
                 {/* Input */}
-                <div className="p-4 border-t bg-background">
-                    <div className="flex gap-2">
-                        <Input
-                            type="text"
-                            placeholder="Type a message..."
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                            className="flex-1"
-                        />
-                        <Button onClick={handleSendMessage} size="icon">
-                            <Send className="h-4 w-4" />
-                        </Button>
-                    </div>
+                <div className="p-4 border-t bg-background flex gap-3">
+                    <Input
+                        type="text"
+                        placeholder="Type a message..."
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                        className="flex-1"
+                    />
+                    <Button onClick={handleSendMessage} size="icon" className="bg-green-600 hover:bg-green-700 text-white">
+                        <Send className="h-4 w-4" />
+                    </Button>
                 </div>
             </div>
         </div>
