@@ -4,7 +4,7 @@ const { OAuth2Client } = require('google-auth-library');
 const bcrypt = require('bcrypt');
 const { validateSignupData } = require('../utils/validation');
 const User = require('../models/user');
-require('dotenv').config();   
+require('dotenv').config();
 
 const authRouter = express.Router();
 

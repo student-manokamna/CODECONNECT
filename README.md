@@ -134,5 +134,5 @@ Open your browser at `http://localhost:5173` (or the port shown in your terminal
 
 ---
 
-
- Assigment made with ❤️ by **Manokamna**.
+## 📄 License
+This project is licensed under the ISC License. Assigment made with ❤️ by **Manokamna**.

@@ -8,9 +8,8 @@ const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const jwt = require("jsonwebtoken")
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
-
 }));
 // app.use((req, res, next) => {
 //     res.header("Access-Control-Allow-Origin", "http://localhost:5173");
@@ -34,7 +33,7 @@ app.use(cookieParser())
 app.use((req, res, next) => {
 
     console.log(`Received ${req.method} request at ${req.url}`);
-    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL || "http://localhost:5173");
     res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.header("Access-Control-Allow-Credentials", "true");
@@ -68,8 +67,9 @@ initializeSocket(server);
 
 connectDB().then(() => {
     console.log("database connection successfull")
-    server.listen(7777, () => {
-        console.log("server is successfully listing on port 7777")
+    const PORT = process.env.PORT || 7777;
+    server.listen(PORT, () => {
+        console.log(`server is successfully listing on port ${PORT}`)
     })
 }).catch(err => {
     console.log("database cannot be connected")

@@ -1,2 +1,2 @@
-const BASE_URL="http://localhost:7777"
+const BASE_URL = "https://codeconnect-ryka.onrender.com";
 export default BASE_URL

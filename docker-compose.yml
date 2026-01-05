@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./CodeConnect_Backend
+    ports:
+      - "7777:7777"
+    environment:
+      - PORT=7777
+      - MONGO_URI=mongodb://mongo:27017/devTinder
+      # Add other env vars here or use .env file
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./CodeConnect_Fronted
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
