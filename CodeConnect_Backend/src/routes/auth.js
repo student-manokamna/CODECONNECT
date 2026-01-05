@@ -54,7 +54,8 @@ authRouter.get('/google/callback', async (req, res) => {
     const token = await user.getJWT();
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true, // Required for SameSite: None
+      sameSite: "None", // Required for Cross-Origin (Vercel -> Render)
       maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
     });
 
@@ -92,7 +93,8 @@ authRouter.post('/login', async (req, res) => {
     const token = await user.getJWT();
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true, // Required for SameSite: None
+      sameSite: "None", // Required for Cross-Origin (Vercel -> Render)
       expires: new Date(Date.now() + 8 * 3600000), // 8 hours
     });
     res.send(user);
@@ -103,7 +105,12 @@ authRouter.post('/login', async (req, res) => {
 
 // 5️⃣ Logout route
 authRouter.post('/logout', (req, res) => {
-  res.cookie('token', '', { maxAge: 0 });
+  res.cookie('token', '', {
+    maxAge: 0,
+    httpOnly: true,
+    secure: true,
+    sameSite: "None"
+  });
   res.send('Logout successful');
 });
 
